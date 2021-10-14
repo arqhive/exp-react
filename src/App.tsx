@@ -1,24 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { ReactElement } from 'react';
+import ContextBasic from './react/ContextBasic';
 
-function App() {
+// JSX는 ReactElement를 반환한다.
+// JSX도 expression 이다. 정규 함수 호출이 되고 객체로 인식된다.
+
+function App():ReactElement {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ContextBasic />
     </div>
   );
 }
