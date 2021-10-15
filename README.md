@@ -28,3 +28,12 @@ npx react-devtools (인스턴트형)
 ### Router 설정
 
 - [React Router](https://github.com/gregberge/loadable-components)
+
+### 성능 최적화
+
+긴 List는 가상화 
+
+windowing 기법을 쓴 라이브러리 추천
+
+- [react-window](https://github.com/bvaughn/react-window)
+- [react-virtualized](https://github.com/bvaughn/react-virtualized)
