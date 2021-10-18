@@ -1,11 +1,13 @@
 import React, { ReactElement } from 'react';
+import { RecoilRoot } from 'recoil';
+import Root from './recoil/Todo';
 
 
 function App(): ReactElement {
   return (
-    <div>
-      <h1>Hello</h1>
-    </div>
+    <RecoilRoot>
+      <Root />
+    </RecoilRoot>
   );
 }
 
