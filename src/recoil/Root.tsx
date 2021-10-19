@@ -59,9 +59,13 @@ function CharacterCount() {
 
 // recoil 상태를 사용하는 컴포넌트는 부모 트리에 RecoilRoot가 필요하다.
 function App() {
+  // 비동기 recoil state를 사용하는 경우 에러나 빈값을 대체하기 위해 React.Suspense 사용
+  // 비동기 에러를 잡기위해 ErrorBoundary 사용
   return (
     <RecoilRoot>
-      <CharacterCounter />
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <CharacterCounter />
+      </React.Suspense>
     </RecoilRoot>
   )
 }
