@@ -1,0 +1,178 @@
+"""
+Field
+가장 간단하게 객체의 특정 필드를 요청하기
+"""
+
+{
+  hero {
+    name      # hero 의 name
+    friends { # hero 의 friends
+      name    # friends 의 name 필드만 
+    }
+  }
+}
+
+"""
+Parameter
+필드에 파라미터를 전달할 수 있다
+"""
+
+{
+  human(id: "1000") {  # id "1000" 번에 해당하는 human의
+    name               # name 과
+    height(unit: FOOT) # height 가져오기 (데이터 변형을 위한 길아 단위 스칼라 필드 FOOT 추가)
+  }
+}
+
+"""
+Aliases
+별칭을 사용해 필드 이름을 원하는 이름으로 바꿀수 있다.
+"""
+
+# 동일한 쿼리를 한 요청에 사용하기 위해 별칭을 사용해 서로 구분함
+{
+  empireHero: hero(episode: EMPIRE) { 
+    name
+  }
+  jediHero: hero(episode: JEDI) {
+    name
+  }
+}  
+
+"""
+Fragments
+재사용 가능한 단위를 만들수 있다
+필드의 반복을 줄여준다
+"""
+
+# Character 타입에 기반한 fragment를 생성
+fragment comparisonFields on Character {
+  name
+  apperasIn
+  friends {
+    name
+  }
+}
+
+{
+  leftComparison: hero(episode: EMPIRE) {
+    ...comparisonFields # JS의 rest 문법처럼 사용할수 있다.
+  }
+  rightComparison: hero(episode: JEDI) {
+    ...comparisonFields
+  }
+}
+
+# Fragment 내에서 변수를 사용할수 있다.
+query HeroComparison($first: Int = 3) {
+  leftComparison: hero(episode: EMPIRE) {
+    ...comparisonFields
+  }
+  rightComparison: hero(episode: JEDI) {
+    ...comparisonFields
+  }
+}
+
+fragment comparisonFields on Character {
+  name
+  friendsConnection(first: $first) {
+    totalCount
+    edges {
+      node {
+        name
+      }
+    }
+  }
+}
+
+"""
+Operation name
+위의 예제에서는 query 키워드와 쿼리 이름을 모두 생략하는 약식 구문을 사용했지만
+프로덕션 앱에서는 코드를 덜 모호가게 만드는데 Operation name을 사용하는 것이 유용하다.
+"""
+
+# query 키워드와 작업 이름을 지정했다.
+query HeroNameAndFriends {
+  hero {
+    name
+    friends {
+      name
+    }
+  }
+}
+
+"""
+Variables
+
+$variableName: value 식으로 사용
+변수는 스칼라, 열거형 또는 객체 타입이여야 한다.
+타입 옆에 ! 를 붙이면 반드시 파라미터가 필요하다는 의미이다.
+"""
+
+# 쿼리의 파라미터를 변수로 설정하고 런타임시 입력받는다.
+query HeroNameAndFriends($episode: Episode) {
+  hero(episode: $episode) {
+    name
+    friends {
+      name
+    }
+  }
+}
+
+# 쿼리에 기본 변수를 설정하기
+query HeroNameAndFriends($episode: Episode = JEDI) {
+  hero(episode: $episode) {
+    name
+    friends {
+      name
+    }
+  }
+}
+
+"""
+Directives
+쿼리의 구조와 모양을 동적으로 변경하기
+"""
+
+query Hero($episode: Episode, $withFriends: Boolean!) {
+  hero(episode: $episode) {
+    name
+    friends @include(if: $withFriends) { # if 가 true 인 경우에는 이 필드를 포함한다.
+      name
+    }
+    family @skip(if: $withFriends) { # if 가 true 인 경우에는 이 필드를 스킵한다.
+
+    }
+  }
+}
+
+"""
+Mutations
+서버측 데이터를 수정하는 방법
+기술적으로는 모든 쿼리를 구현하여 데이터 쓰기를 할수 있지만 명시적으로 mutation 키워드를 사용하는 것이 좋다.
+"""
+
+# mutaion 필드는 차례대로 실행되어 경쟁을 유발하지 않음
+mutation CreateReviewForEpisode($ep: Episode!, $review: ReviewInput!) {
+  createReview(episode: $ep, review: $review) {
+    stars
+    commentary
+  }
+}
+
+"""
+Inline Fragments
+"""
+
+query HeroForEpisode($ep: Episode!) {
+  hero(episode: $ep) {
+    __typename        # 메타필드를 사용해 각각의 결과에 타입을 가져올수 있다.
+    name
+    ... on Droid {    # Inline Fragment를 사용해 Interface 또는 Union type을 반환
+      primaryFunction
+    }
+    ... on Human {
+      height
+    }
+  }
+}

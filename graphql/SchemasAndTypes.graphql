@@ -1,0 +1,191 @@
+"""
+Schemas
+"""
+
+"""
+Object types and fields
+"""
+type Character {         # GraphQL Object Type 이며, 일부 필드가 있는 타입입을 의미한다.
+  name: String!          # Character 타입에 있는 필드 이며 String은 내장 스칼라 유형중 하나이다. !는 nullable이 아님을 의미한다. 
+  appearsIn: [Episode!]! # Episode 객체의 배열을 나타낸다. 모든항목이 Episode 객체이며 배열이 0개 이상임을 보장하는 필드이다.
+}
+
+
+"""
+Arguments
+
+객체 타입의 모든 필드는 0개 이상의 인수를 가질수 있다.
+"""
+
+type Starship {
+  id: ID!
+  name: String!
+  length(unit: LengthUnit = METER): Float
+}
+
+"""
+Quries and schemas
+스키마는 두가지 특별한 타입이 있다
+모든 GQL 서비스에는 query 타입이 있으며 mutation은 선택사항이다.
+query 키워드는 GQL 쿼리의 진입점을 정의하기 떄문에 특별하다.
+"""
+shcema {
+  query: Query
+  mutation: Mutation
+}
+
+query {
+  hero {
+    name
+  }
+  droid(id: "2000") {
+    name
+  }
+}
+
+"""
+Scalar Types
+필드의 구체적인 타입
+"""
+
+Int : 부호가 있는 32비트 정수
+Float : 부호가 있는 배정밀도 부동 소수점 값
+String : UTF-8 문자 시퀀스
+Boolean : true or false
+ID : 고유 식별자
+
+# 사용자 지정 스칼라 타입을 구현 할수 있다.
+scalar Date 
+
+"""
+Enum types
+허용되는 특정 값 집합 스칼라
+"""
+
+enum Episode {
+  NEWHOPE
+  EMPIRE
+  JEDI
+}
+
+"""
+Lists and non null
+"""
+
+type Character {
+  name: String!
+  appearsIn(first: 2 offset: 2 after: blahlbah): [Episode]! # !는 Null이 아님을 의미한다. [] 는 리스트를 의미한다. first after offset은 페이지네이션에 유용하다.
+}
+
+만약 [String!] 인경우
+null // 유효
+[] // 유효
+['a', 'b'] // 유효
+['a', 'b', null] // 오류
+
+만약 [String]! 인경우
+null // 오류
+[] // 유효
+['a', 'b', null] // 오류
+
+"""
+Intefaces
+
+인터페이스를 구현하기 위해 포함해야 하는 필드의 특정 세트를 포함하는 추상 타입이다.
+"""
+# 해당 인터페이스를 구현하는 type Character는 이러한 인수 및 반환 유형과 함께 정확한 필드가 있어야 한다.
+interface Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn [Episode]!
+}
+
+type Human implements Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode]!
+  starships: [Starship] # 인터페이스를 모두 구현하고 특정 필드를 더 가진다.
+  totalCredits: Int
+}
+
+type Droid implements Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode]!
+  primaryFunction: String
+}
+
+query HeroForEpisode($ep: Episode!) {
+  hero(episode: $ep) {
+    name
+    #primaryFunction # Hero는 Character를 반환해야 해서 해당 부분이 에러남
+    ... on Droid {
+      primaryFunction # 인라인 프래그먼트를 사용해야 한다.
+    }
+  }
+}
+
+"""
+Union Types
+인터페이스와 유사하지만 타입 간에 공통 필드를 지정하지 못한다.
+"""
+
+union SearchResult = Human | Droid | Starship
+
+{
+  search(text: "an") {
+    __typename # 메타필드를 사용해 결과값에 타입을 각각 볼 수 있다.
+    ... on Human {
+      name
+      height
+    }
+    ... on Droid {
+      name
+      primaryFunction
+    }
+    ... on Starship {
+      name
+      length
+    }
+  }
+}
+
+""" 
+Input Types
+
+mutation에 유용하다.
+"""
+
+type ReviewInput {
+  stars: Int!
+  review: String
+}
+
+mutation CreateReviewForEpisode($ep: Episode, $review: ReviewInput) {
+  createReview(episode: $ep, review: $review) {
+    stars
+    commentary
+  }
+}
+
+"""
+Introspection
+"""
+
+{
+  __schema { # name의 타입들의 스키마를 가져옴
+    types {
+      name
+    }
+  }
+}
+
+{
+  __type(name: "Droid") {
+    name 
+    kind
+  }
+}
