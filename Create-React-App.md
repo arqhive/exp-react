@@ -8,7 +8,6 @@
 npx create-react-app [app-name]
 ```
 
-
 템플릿 지정
 
 ```
@@ -19,6 +18,7 @@ npx create-react-app [app-name] --template typescript
 ```
 
 패키지 매니저 선택 (기본 생성시 yarn으로 지정됨)
+
 ```
 npx create-react-app [app-name] --use-npm
 ```
@@ -28,6 +28,7 @@ npx create-react-app [app-name] --use-npm
 ## 기본 Folder Structure
 
 프로젝트를 빌드하려면 아래 2개의 파일이 정확히 같은 위치와 이름으로 있어야 함
+
 - public/index.html (Page template)
 - src/index.js (JavaScript entry)
 
@@ -40,16 +41,19 @@ Git이 설치되어 있으면 최상위 `.git` 이 자동으로 생성된다.
 ## 기본 scripts
 
 개발 모드에서 앱을 실행한다. http://localhost:3000 에서 실행된다.
+
 ```
 yarn start
 ```
 
 대화식 시계 모드에서 테스트 러너를 시작한다.
+
 ```
 yarn test
-````
+```
 
 build 폴더에 프로덕션용 앱을 빌드 한다. 프로덕션 모드에서는 React를 올바르게 번들로 만들고 최상의 성능을 위해 빌드를 최적화 한다.
+
 ```
 yarn build
 ```
@@ -57,6 +61,7 @@ yarn build
 빌드 도구 및 구성을 재설정하거나 수정하고 싶을때. 즉, 단일 빌드 종속성을 제거하고 프로젝트에 종속성으로 복사하고 싶을때
 
 한번 `eject`하면 다시 되돌릴 수 없다.
+
 ```
 yarn eject
 ```
@@ -66,7 +71,8 @@ yarn eject
 기본적으로는 모든 최신 브라우저를 지원한다. IE 9, 10, 11을 지원하려면 [react-app-polyfill](https://github.com/facebook/create-react-app/blob/main/packages/react-app-polyfill/README.md) 사용
 
 다음 기능을 지원한다.
-- 지수 연산자 (2 ** 3) (ES2016)
+
+- 지수 연산자 (2 \*\* 3) (ES2016)
 - async/await (ES2017)
 - Object rest/spread (ES2018)
 - Dynamic import (4단계 제안)
@@ -76,6 +82,7 @@ yarn eject
 <b>기본적으로 폴리필을 포함하지 않는다.</b> Array.from(), Symbol을 사용하는 경우 적절한 폴리필을 수동으로 포함해야 한다.
 
 package.json 내 browerlist에서 지원 범위를 수정할 수 있다. (자세한 내용은 [browerslist 참고](https://github.com/browserslist/browserslist#queries))
+
 ```
   "browserslist": {
     "production": [
@@ -89,9 +96,9 @@ package.json 내 browerlist에서 지원 범위를 수정할 수 있다. (자세
       "last 1 safari version"
     ]
   }
-  ```
+```
 
-  > browserslist를 편집하면 변경 사항이 바로 적용되지 않는 것을 확인할 수 있는데, babel-loader가 package.json의 변경 사항을 감지하기 못하기 때문이다. 빠른 해결 방법은 node_modules/.cache 를 삭제하고 다시 시도하는 것이다.
+> browserslist를 편집하면 변경 사항이 바로 적용되지 않는 것을 확인할 수 있는데, babel-loader가 package.json의 변경 사항을 감지하기 못하기 때문이다. 빠른 해결 방법은 node_modules/.cache 를 삭제하고 다시 시도하는 것이다.
 
 ---
 
@@ -140,6 +147,7 @@ HTTPS=true yarn start
 ## 절대경로를 이용해 파일 불러오기 (tsconfig.json 또는 jsconfig.json)
 
 아래 코드 추가
+
 ```
 {
   "compilerOptions": {
@@ -148,11 +156,13 @@ HTTPS=true yarn start
   "include": ["src"]
 }
 ```
+
 이렇게 하면 에디터 경로 자동완성이 src 부터 시작됨
 
 컴파일과 같이하려면 babel 설정도 필요하다.
 
 ## 전역 변수
+
 window 객체에 프로퍼티를 추가해 전역변수로 사용할 수 있다. 단 Linter가 변수 정의를 알 수 없어 에러로 표시한다.
 
 ## 환경 변수 (process.env ... 로 접근)
@@ -175,3 +185,9 @@ window 객체에 프로퍼티를 추가해 전역변수로 사용할 수 있다.
 ## 테스트
 
 [TODO](https://create-react-app.dev/docs/running-tests)
+[Apollo Test](https://www.apollographql.com/docs/react/development-testing/testing/)
+
+## Apollo
+
+[SSR](https://www.apollographql.com/docs/react/performance/server-side-rendering/)
+[SSR2](https://www.apollographql.com/docs/react/api/react/ssr/)

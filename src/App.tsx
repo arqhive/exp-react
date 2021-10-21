@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-
+import ApolloApp from './apollo/index';
 
 function App(): ReactElement {
-  return (
-    <div>Hello</div>
+  return  (
+    <ApolloApp />
   );
 }
 
