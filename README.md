@@ -31,7 +31,7 @@ npx react-devtools (인스턴트형)
 
 ### 성능 최적화
 
-긴 List는 가상화 
+긴 List는 가상화
 
 windowing 기법을 쓴 라이브러리 추천
 
@@ -41,3 +41,43 @@ windowing 기법을 쓴 라이브러리 추천
 ### Hook eslint 플러그인
 
 - eslint-plugin-react-hooks
+
+### next.js with styled-components
+
+[Guide](https://github.com/vercel/next.js/blob/master/examples/with-styled-components/pages/_document.js)
+
+### styled-components Tooling
+
+babel-plugin (for SSR, minification of styles, nicer debugging)
+[자세히보기](https://styled-components.com/docs/tooling#babel-plugin)
+
+```
+yarn add --dev babel-plugin-styled-components
+```
+
+```
+in .babelrc
+
+{
+  "plugins": [
+    [
+      "babel-plugin-styled-components",
+      {
+        "ssr": true, // ssr 설정 옵션
+        "displayName": true // 디버깅시 이름이 표시됨
+        "fileName": false // displayName 강제하기
+        "minify": true, // 주석과 공백을 제거함
+        "transpileTemplateLiterals": false, // 템플릿 리터럴 트랜스 파일
+        "pure": true, // 순수 주석 제거
+        "namespace": "my-app", // 네임스페이스 지정 (클래스 이름이 고유하도록 보장함)
+      }
+    ]
+  ]
+}
+```
+
+Jest Integration
+
+```
+yarn add --dev jest-styled-components
+```

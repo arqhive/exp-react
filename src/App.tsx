@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
-import ApolloApp from './apollo/index';
+import StyledComponents from './styledComponents/Advanced';
 
 function App(): ReactElement {
-  return  (
-    <ApolloApp />
+  return (
+    <StyledComponents />
   );
 }
 
